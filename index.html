@@ -1,2 +1,261 @@
-<p>Hello 大家好</p>
-<p>我是shutter，这是我的个人网站。 </p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>随机武器杯</title>
+  <style>
+    h1 {
+      font-family: 'SimHei', serif;
+      font-size: 23px;
+    }
+    button, p {
+      font-family: 'Microsoft YaHei', sans-serif;
+      font-size: 16px;
+      line-height: 1.2;
+      margin: 5px 0;
+    }
+    input {
+      font-family: 'Microsoft YaHei', sans-serif;
+      font-size: 16px;
+    }
+    select {
+      font-family: 'Microsoft YaHei', sans-serif;
+      font-size: 18px;
+    }
+    body {
+      font-family: 'Microsoft YaHei', sans-serif;
+      font-size: 18px;
+      display: flex; /* 使用 Flex 布局 */
+    }
+    #left-column, #middle-column, #right-column, #fourth-column {
+      flex: 1; /* 平均占据可用空间 */
+    }
+  </style>
+</head>
+<body>
+<?php
+require_once("./splatoon3_data.php");
+?>
+
+<div id="left-column">
+  <h1>设置</h1>
+  <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+    <label for="selectType">指定装备或技能：</label>
+    <select id="selectType" name="selectType">
+      <option value="default">--请选择--</option>
+      <option value="equipment">指定装备</option>
+      <option value="gear">指定技能</option>
+    </select>
+    <br>
+    <label for="numPlayers">玩家数量：</label>
+    <input type="number" id="numPlayers" name="numPlayers" min="2" max="8">
+    <button type="submit" name="generateWeapons">生成</button>
+  </form>
+  
+  <p id="map">
+    <?php
+    $numPlayers = 0;
+    $selectedType = "";
+    if (!isset($_SESSION['mapResults'])) {
+      $_SESSION['mapResults'] = array();
+    }
+  
+    if (isset($_POST['generateWeapons']) && isset($_POST['selectType'])) {
+      $selectedType = $_POST['selectType'];
+      if ($selectedType !== 'default') {
+        $_SESSION['selectedNumPlayers'] = $_POST['numPlayers']; // 存储所选数量
+        $numPlayers = isset($_SESSION['selectedNumPlayers']) ? $_SESSION['selectedNumPlayers'] : 2;
+        $_SESSION['mapResults'] = array();
+    
+        $randomMap = array_rand($maps);
+        $mapImage = $maps[$randomMap];
+        $_SESSION['mapResults'][] = "<img src='{$mapImage}' alt='{$randomMap}' width='280' height='140'><br>《{$randomMap}》";
+      }
+    }
+
+    if ($selectedType !== 'default') {
+      echo ($selectedType === 'equipment' ? '<strong>指定装备</strong>' : '<strong>指定技能</strong>') . "，";
+      if (!empty($numPlayers)) {
+        echo "<strong>玩家{$numPlayers}人</strong><br>";
+      } else {
+        echo "<strong>未选择玩家人数</strong>";
+      }
+    } else {
+      echo "<strong>请选择指定类型</strong>";
+    }
+    ?>
+    <h1>地图</h1>
+    <?php
+    if (!empty($numPlayers)) {
+      echo implode("<br>", $_SESSION['mapResults']);
+    }
+    ?>
+  </p>
+
+  <h1>模式</h1>
+  <p id="mode">
+    <?php
+    if (!isset($_SESSION['modeResults'])) {
+      $_SESSION['modeResults'] = array();
+    }
+  
+    if (isset($_POST['generateWeapons']) && isset($_POST['selectType'])) {
+      $selectedType = $_POST['selectType'];
+      if ($selectedType !== 'default') {
+        $_SESSION['modeResults'] = array();
+    
+        $randomMode = array_rand($modes);
+        $modeImage = $modes[$randomMode];
+        $_SESSION['modeResults'][] = "<img src='{$modeImage}' alt='{$randomMode}' width='280' height='60'><br>《{$randomMode}》";
+      }
+    }
+
+    if (!empty($numPlayers)) {
+      echo implode("<br>", $_SESSION['modeResults']);
+    }
+    ?>
+  </p>
+</div>
+
+<div id="middle-column">
+  <p>
+  <?php
+  session_start();
+  if (isset($_POST['generateWeapons'])) {
+    $selectedType = $_POST['selectType'];
+    $numPlayers = isset($_POST['numPlayers']) ? intval($_POST['numPlayers']) : 2;
+
+    if ($selectedType === 'equipment') {
+  ?>
+      <h1>指定装备</h1>
+      <p id="equipment">
+        <?php
+        if (!isset($_SESSION['equipmentResult'])) {
+          $_SESSION['equipmentResult'] = '';
+        }
+
+        if (isset($_POST['generateWeapons']) && isset($_POST['selectType'])) {
+          $selectedType = $_POST['selectType'];
+          if ($selectedType !== 'default') {
+            $headgearPage = rand(1, 13);
+            $headgearColumn = rand(1, 3);
+            $headgearNumber = rand(1, 4);
+
+            $clothesPage = rand(1, 17);
+            $clothesColumn = rand(1, 3);
+            $clothesNumber = rand(1, 4);
+
+            $shoesPage = rand(1, 12);
+            $shoesNumber = rand(1, 4);
+            if ($shoesPage != 12) {
+              $shoesColumn = rand(1, 3);
+            } else {
+              $shoesColumn = 1;
+              $shoesNumber = 1;
+            }
+
+            $atamaImage = $equip['atama'];
+            $fukuImage = $equip['fuku'];
+            $kutsuImage = $equip['kutsu'];
+
+            $_SESSION['equipmentResult'] = "<img src='{$atamaImage}' alt='头饰' width='80' height='80'><br>头饰: 第{$headgearPage}页，第{$headgearColumn}行，第{$headgearNumber}个<br>";
+            $_SESSION['equipmentResult'] .= "<img src='{$fukuImage}' alt='衣服' width='80' height='80'><br>衣服: 第{$clothesPage}页，第{$clothesColumn}行，第{$clothesNumber}个<br>";
+            $_SESSION['equipmentResult'] .= "<img src='{$kutsuImage}' alt='鞋子' width='80' height='80'><br>鞋子: 第{$shoesPage}页，第{$shoesColumn}行，第{$shoesNumber}个";
+          }
+        }
+
+        if (!empty($numPlayers)) {
+          echo $_SESSION['equipmentResult'];
+        }
+        ?>
+      </p>
+    <?php
+    } elseif ($selectedType === 'gear') {
+    ?>
+      <h1>指定技能</h1>
+      <p id="gear">
+        <?php
+        if (!isset($_SESSION['gearResults'])) {
+          $_SESSION['gearResults'] = array();
+        }
+
+        if (isset($_POST['generateWeapons']) && isset($_POST['selectType'])) {
+          $selectedType = $_POST['selectType'];
+          if ($selectedType !== 'default') {
+            $_SESSION['gearResults'] = array();
+
+            $randomAtama = array_rand($atamaGear);
+            $randomFuku = array_rand($fukuGear);
+            $randomKutsu = array_rand($kutsuGear);
+
+            $_SESSION['gearResults'][] = "<img src='{$atamaGear[$randomAtama]}' alt='头饰' width='80' height='80'><br>头饰: {$randomAtama}";
+            $_SESSION['gearResults'][] = "<img src='{$fukuGear[$randomFuku]}' alt='衣服' width='80' height='80'><br>衣服: {$randomFuku}";
+            $_SESSION['gearResults'][] = "<img src='{$kutsuGear[$randomKutsu]}' alt='鞋子' width='80' height='80'><br>鞋子: {$randomKutsu}";
+          }
+        }
+
+        if (!empty($numPlayers)) {
+          echo implode("<br>", $_SESSION['gearResults']);
+        }
+        ?>
+      </p>
+      <?php
+    }
+  }
+  ?>
+  </p>
+</div>
+
+
+<div id="right-column">
+  <p id="weaponsA">
+    <?php
+    $playersPerTeam = ceil($numPlayers / 2);
+
+    $teamA = array();
+    $teamB = array();
+
+    for ($i = 0; $i < $numPlayers; $i++) {
+        $randomWeapon = array_rand($weapons);
+        $weaponImage = $weapons[$randomWeapon];
+
+        if ($i < $playersPerTeam) {
+            $teamA[] = "<img src='{$weaponImage}' alt='{$randomWeapon}' width='60' height='60'><br>{$randomWeapon}";
+        } else {
+            $teamB[] = "<img src='{$weaponImage}' alt='{$randomWeapon}' width='60' height='60'><br>{$randomWeapon}";
+        }
+    }
+
+    if((count($teamA)) > (count($teamB))) {
+      echo "<h1>A 队 - " . count($teamA) . " 位玩家（人多方）</h1>";
+    } else {
+      echo "<h1>A 队 - " . count($teamA) . " 位玩家</h1>";
+    }
+  
+    foreach ($teamA as $index => $result) {
+        if ($index == 0) {
+            echo "<p>玩家 " . ($index + 1) . ":<br>$result</p>";
+        } else {
+            echo "<p><br>玩家 " . ($index + 1) . ":<br>$result</p>";
+        }
+    }
+    ?>
+  </p>
+</div>
+
+<div id="fourth-column">
+  <p id="weaponsB">
+    <?php
+    echo "<h1>B 队 - " . count($teamB) . " 位玩家</h1>";
+    foreach ($teamB as $index => $result) {
+        if ($index == 0) {
+            echo "<p>玩家 " . ($index + 1) . ":<br>$result</p>";
+        } else {
+            echo "<p><br>玩家 " . ($index + 1) . ":<br>$result</p>";
+        }
+    }
+    ?>
+  </p>
+</div>
+
+</body>
+</html>
