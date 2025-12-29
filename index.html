@@ -1,47 +1,48 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="youyu.ico" type="image/x-icon">
-  <title>Splatoon3 非官方网站</title>
-
+  <link rel="shortcut icon" href="youyu.ico" type="image/x-icon"> 
+  <title>武器</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Zen+Kaku+Gothic+New:wght@700&display=swap');
-
     body {
-      background-color: #000;
-      color: #fff;
+      background-color: #000000;
+      color: #FFFFFF;
       font-size: 30px;
       font-family: 'ZCOOL KuaiLe', 'Zen Kaku Gothic New', sans-serif;
     }
-
     ul {
-      list-style: none;
+      list-style-type: none;
       margin: 0;
       padding: 0;
-      background-color: #000;
+      background-color: #000000;
       overflow: hidden;
       border-top: 2px solid #5d36df;
       border-bottom: 2px solid #5d36df;
     }
 
-    li { float: left; }
+    li {
+      float: left;
+    }
 
     li a {
       display: block;
-      color: #f1ec46;
+      color: #333;
       text-align: center;
       padding: 24px 30px;
       text-decoration: none;
       font-size: 34px;
+      position: relative;
     }
 
     li a:hover {
       background-color: #ddd;
-      color: #000;
+      color: #000000;
     }
 
+    /* 设置下拉菜单样式 */
     .dropdown-content {
       display: none;
       position: absolute;
@@ -50,16 +51,23 @@
       z-index: 1;
     }
 
-    li:hover .dropdown-content { display: block; }
-
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
+    li:hover .dropdown-content {
       display: block;
     }
 
-    .dropdown-content a:hover { background-color: #f1f1f1; }
+    /* 样式下拉菜单项 */
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* 设置背景图片 */
     .background-image {
       position: fixed;
       top: 50%;
@@ -70,55 +78,93 @@
       width: 1792px;
       height: 1066px;
     }
-
     .logo {
-      width: 150px;
-      margin-right: 20px;
+      display: block;
+      width: 150px; /* 调整图像的宽度 */
+      height: auto; /* 让高度按比例自动调整 */
+      margin-right: 20px; /* 可以根据需要调整图像与其他导航项之间的间距 */
+    }
+    li a {
+      color: #f1ec46;
+    }
+    .sub-special-categories {
+        display: flex;
+        padding: 20px;
+        background-color: #333;
+        color: #fff;
+    }
+    .sub-special-categories img {
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+        cursor: pointer;
+        border-radius: 50px;
     }
 
-    h2 {
-      color: #f1ec46;
-      font-weight: normal;
+    .weapons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #444;
+    }
+    .weapon {
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+        background-color: #666;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .weapon img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
     }
   </style>
 </head>
-
 <body>
 
-<img class="background-image"
-     src="https://i.redd.it/0k3xmcw3y4i61.png"
-     alt="Background">
+<!-- 背景图片 -->
+<img class="background-image" src="https://i.redd.it/0k3xmcw3y4i61.png" alt="Background Image">
 
 <!-- 导航栏 -->
 <ul>
-  <li><img src="https://i.redd.it/0k3xmcw3y4i61.png" class="logo"></li>
-  <li><a href="index.html">首页</a></li>
-
-  <li><a href="weapons.html">武器</a>
+  <li><img src="https://i.redd.it/0k3xmcw3y4i61.png" alt="Logo" class="logo"></li>
+  <li><a href="homepage.php">首页</a></li>
+  <li><a href="weapon.php">武器</a>
     <div class="dropdown-content">
-      <a href="shooters.html">射击枪</a>
-      <a href="rollers.html">滚筒</a>
-      <a href="chargers.html">蓄力狙击枪</a>
-      <a href="sloshers.html">泼桶</a>
-      <a href="spiners.html">旋转枪</a>
-      <a href="dualies.html">机动枪</a>
-      <a href="umbrellas.html">防空伞</a>
-      <a href="blasters.html">爆破枪</a>
-      <a href="fudes.html">画笔</a>
-      <a href="stringers.html">猎鱼弓</a>
-      <a href="wipers.html">刮水刀</a>
-    </div>
-  </li>
-
-  <li><a href="#">装备</a></li>
-  <li><a href="#">技能</a></li>
-  <li><a href="#">模式</a></li>
-  <li><a href="#">地图</a></li>
-  <li><a href="#">打工</a></li>
-  <li><a href="random.html">随机武器</a></li>
-  <li><a href="unified.html">统一武器</a></li>
+      <a href="shooters.php">射击枪</a>
+      <a href="rollers.php">滚筒</a>
+      <a href="chargers.php">蓄力狙击枪</a>
+      <a href="sloshers.php">泼桶</a>
+      <a href="spiners.php">旋转枪</a>
+      <a href="dualies.php">机动枪</a>
+      <a href="umbrellas.php">防空伞</a>
+      <a href="blasters.php">爆破枪</a>
+      <a href="fudes.php">画笔</a>
+      <a href="stringers.php">猎鱼弓</a>
+      <a href="wipers.php">刮水刀</a>
+    </div></li>
+  <li><a href="#gear">装备</a>
+    <div class="dropdown-content">
+      <a href="#head">头饰</a>
+      <a href="#clothes">衣服</a>
+      <a href="#shoes">鞋子</a>
+    </div></li>
+  <li><a href="#skill">技能</a></li>
+  <li><a href="#mode">模式</a></li>
+  <li><a href="#map">地图</a></li>
+  <li><a href="#pt">打工</a></li>
+  <li><a href="randomWeapon.php">随机武器</a></li>
+  <li><a href="unified.php">统一武器</a></li>
 </ul>
-
+<br>
+  
 <!-- 页面内容 -->
 <div style="padding: 50px 250px;" id="content">
   加载中……
